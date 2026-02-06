@@ -142,7 +142,7 @@ class ImageCaptioningApp:
             /* Sembunyikan Elemen Streamlit Default */
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
-            header {visibility: hidden;}
+        
             
             /* Responsif */
             @media (max-width: 768px) {
@@ -162,38 +162,36 @@ class ImageCaptioningApp:
         # Section Hero
         st.markdown("""
             <div class="hero-container">
-                <h1 class="hero-title">Selamat datang di Aplikasi Image Caption</h1>
-                <p class="hero-subtitle">
-                    Image captioning adalah tugas lintas disiplin yang bertujuan untuk secara otomatis menghasilkan deskripsi tekstual untuk gambar yang diberikan dengan menggunakan teknik visi komputer dan pemrosesan bahasa alami" (Zhao, 2021). 
-                </p>
+                <h1 class="hero-title">Welcome to the Image Captioning Application</h1>
+               
             </div>
         """, unsafe_allow_html=True)
         
         # Fitur Utama
         st.markdown("""
             <div class="main-section">
-                <h2 style="text-align: center; color: #333;">Fitur Utama</h2>
+                <h2 style="text-align: center; color: #333;">Main Features</h2>
                 <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 2rem;">
                     <div style="flex: 1; min-width: 250px; margin: 1rem; padding: 1rem; text-align: center; background: #f9f9f9; border-radius: 10px; border: 1px solid #ddd;">
-                        <h3 style="color: #0072ff;">📚 Mendukung Penelitian</h3>
-                        <p>Dikembangkan untuk mendukung penelitian tugas akhir dalam bidang image captioning.</p>
+                        <h3 style="color: #0072ff;">📚 Supports Research.</h3>
+                        <p style="color: #000000;">Developed to support final project research in the field of image captioning.</p>
                     </div>
                     <div style="flex: 1; min-width: 250px; margin: 1rem; padding: 1rem; text-align: center; background: #f9f9f9; border-radius: 10px; border: 1px solid #ddd;">
-                        <h3 style="color: #0072ff;">📸 Eksperimen Model</h3>
-                        <p>Memanfaatkan model CNN-LSTM untuk menghasilkan deskripsi gambar secara otomatis.</p>
+                        <h3 style="color: #0072ff;">📸 Model Experimentation</h3>
+                        <p style="color: #000000;">Utilizes a CNN-LSTM model to automatically generate image descriptions.</p>
                     </div>
                     <div style="flex: 1; min-width: 250px; margin: 1rem; padding: 1rem; text-align: center; background: #f9f9f9; border-radius: 10px; border: 1px solid #ddd;">
-                        <h3 style="color: #0072ff;">📝 Dokumentasi Hasil</h3>
-                        <p>Menyediakan fitur untuk menyimpan hasil caption sebagai bagian dari analisis data.</p>
+                        <h3 style="color: #0072ff;">📝 Results Documentation</h3>
+                        <p style="color: #000000;">Provides a feature to save generated captions as part of data analysis.</p>
                     </div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
         
         # Tombol Mulai
-        if st.button("✨ Mulai Generate Caption", use_container_width=True):
+        if st.button("✨ Generate Caption", use_container_width=True):
             st.session_state.current_page = "Generate Caption"
-            st.experimental_rerun()
+            st.rerun()
 
     def generate_caption_ui(self):
         # Section Hero dengan tinggi lebih kecil
@@ -207,12 +205,13 @@ class ImageCaptioningApp:
         with st.container():
             col1, col2, col3 = st.columns([1,2,1])
             with col2:
-                uploaded_file = st.file_uploader("Unggah gambar Anda", type=['jpg', 'jpeg', 'png'])
-                
+                st.markdown("<p style='color:black; font-size:18px;'>Upload your image</p>", unsafe_allow_html=True)
+                uploaded_file = st.file_uploader("", type=['jpg', 'jpeg', 'png'])
+
                 if uploaded_file is not None:
                     try:
                         image = Image.open(uploaded_file)
-                        st.image(image, use_column_width=True)
+                        st.image(image, use_container_width=True)
                         
                         if st.button("🔮 Generate Caption", key="generate_btn"):
                             with st.spinner("Memproses gambar..."):
@@ -222,10 +221,11 @@ class ImageCaptioningApp:
                                 
                                 st.markdown(f"""
                                     <div class="result-container">
-                                        <h3>Hasil Caption:</h3>
-                                        <p>{caption}</p>
+                                        <h3 style="color: #007BFF;">Caption Result:</h3>
+                                        <p style="color: #007BFF; font-size: 18px;">{caption}</p>
                                     </div>
                                 """, unsafe_allow_html=True)
+
                                 
                                 self.save_to_history(image, caption)
                     except Exception as e:
@@ -234,7 +234,7 @@ class ImageCaptioningApp:
     def show_history_page(self):
         st.markdown("""
             <div class="hero-container" style="padding: 2rem;">
-                <h2 class="hero-title">Riwayat Caption</h2>
+                <h2 class="hero-title">Caption History</h2>
             </div>
         """, unsafe_allow_html=True)
         
@@ -258,14 +258,14 @@ class ImageCaptioningApp:
                 with col1:
                     try:
                         image_bytes = base64.b64decode(item['image'])
-                        st.image(image_bytes, use_column_width=True)
+                        st.image(image_bytes, use_container_width=True)
                     except Exception as e:
                         st.error("Gagal memuat gambar")
                 with col2:
                     st.markdown(f"""
                         <div style="padding: 1rem;">
-                            <h4>Caption:</h4>
-                            <p>{item['caption']}</p>
+                            <h4 style="color: #007BFF;">Caption:</h4>
+                            <p style="color: #007BFF;">{item['caption']}</p>
                         </div>
                     """, unsafe_allow_html=True)
 
